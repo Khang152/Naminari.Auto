@@ -28,60 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnStart = new Button();
-            btnClickMe = new Button();
             lblPosition = new Label();
+            lblTypeButton = new Label();
+            lblTypeClick = new Label();
             SuspendLayout();
-            // 
-            // btnStart
-            // 
-            btnStart.Location = new Point(12, 305);
-            btnStart.Name = "btnStart";
-            btnStart.Size = new Size(116, 23);
-            btnStart.TabIndex = 0;
-            btnStart.Text = "Start Auto Click";
-            btnStart.UseVisualStyleBackColor = true;
-            btnStart.Click += btnStart_Click;
-            // 
-            // btnClickMe
-            // 
-            btnClickMe.Location = new Point(425, 305);
-            btnClickMe.Name = "btnClickMe";
-            btnClickMe.RightToLeft = RightToLeft.No;
-            btnClickMe.Size = new Size(75, 23);
-            btnClickMe.TabIndex = 1;
-            btnClickMe.Text = "Click Me!";
-            btnClickMe.UseVisualStyleBackColor = true;
             // 
             // lblPosition
             // 
             lblPosition.AutoSize = true;
-            lblPosition.Location = new Point(12, 9);
+            lblPosition.Location = new Point(37, 18);
             lblPosition.Name = "lblPosition";
-            lblPosition.Size = new Size(60, 15);
+            lblPosition.Size = new Size(112, 15);
             lblPosition.TabIndex = 2;
-            lblPosition.Text = "X : ? - Y : ?";
+            lblPosition.Text = "Position : X : ? - Y : ?";
+            // 
+            // lblTypeButton
+            // 
+            lblTypeButton.AutoSize = true;
+            lblTypeButton.Location = new Point(17, 42);
+            lblTypeButton.Name = "lblTypeButton";
+            lblTypeButton.Size = new Size(82, 15);
+            lblTypeButton.TabIndex = 3;
+            lblTypeButton.Text = "Type Button :  ";
+            // 
+            // lblTypeClick
+            // 
+            lblTypeClick.AutoSize = true;
+            lblTypeClick.Location = new Point(27, 68);
+            lblTypeClick.Name = "lblTypeClick";
+            lblTypeClick.Size = new Size(72, 15);
+            lblTypeClick.TabIndex = 4;
+            lblTypeClick.Text = "Type Click :  ";
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(512, 340);
+            ClientSize = new Size(518, 399);
+            Controls.Add(lblTypeClick);
+            Controls.Add(lblTypeButton);
             Controls.Add(lblPosition);
-            Controls.Add(btnClickMe);
-            Controls.Add(btnStart);
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sample";
+            TopMost = true;
             Load += FormMain_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button btnStart;
-        private Button btnClickMe;
         private Label lblPosition;
+        private Label lblTypeButton;
+        private Label lblTypeClick;
     }
 }
