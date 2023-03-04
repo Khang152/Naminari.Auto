@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naminari.Auto", "Naminari.Auto\Naminari.Auto.csproj", "{113377E6-467B-41B5-BD55-045DCE02F105}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naminari.Auto.SampleApp", "Naminari.Auto.SampleApp\Naminari.Auto.SampleApp.csproj", "{5A83DE14-20EB-4AF0-AC12-5244704F0B1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{113377E6-467B-41B5-BD55-045DCE02F105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113377E6-467B-41B5-BD55-045DCE02F105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113377E6-467B-41B5-BD55-045DCE02F105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113377E6-467B-41B5-BD55-045DCE02F105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A83DE14-20EB-4AF0-AC12-5244704F0B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A83DE14-20EB-4AF0-AC12-5244704F0B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A83DE14-20EB-4AF0-AC12-5244704F0B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A83DE14-20EB-4AF0-AC12-5244704F0B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F298C2EA-2CCD-4927-9517-086914F489F8}
+	EndGlobalSection
+EndGlobal
