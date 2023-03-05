@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             lblPosition = new Label();
             lblTypeButton = new Label();
             lblTypeClick = new Label();
@@ -122,6 +123,7 @@
             Controls.Add(grAction);
             Controls.Add(gbHook);
             Controls.Add(btnStart);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Naminari.Auto.Sample";

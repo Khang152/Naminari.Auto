@@ -22,7 +22,7 @@ namespace Naminari.Auto.SampleApp
             lblPosition.Text = Const.LBL_POSITION_TEXT;
             lblTypeButton.Text = Const.LBL_TYPEBUTTON_TEXT;
             lblTypeClick.Text = Const.LBL_TYPECLICK_TEXT;
-            
+
             actionItems.Clear();
             grvAction.DataSource = actionItems;
         }
@@ -65,8 +65,8 @@ namespace Naminari.Auto.SampleApp
             lblTypeButton.Text = $"Type Button : {e.Button.ToString()}";
             lblTypeClick.Text = $"Type Click : Normal Click";
 
-            var pos = Mouse.GetPosition();
-            actionItems.Add(new ActionItem() { X = pos.X, Y = pos.Y, Color = pos.GetPixelColor().Name });
+            var position = Mouse.GetPosition();
+            actionItems.Add(new ActionItem() { X = position.X, Y = position.Y, Color = position.GetPixelColor().Name });
 
             var bindingList = new BindingList<ActionItem>(actionItems);
             var source = new BindingSource(bindingList, null);

@@ -5,7 +5,22 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>Images\icon.ico</ApplicationIcon>
+		<Title>Naminari.Auto.Sample</Title>
+		<Authors>Khang152</Authors>
+		<Company>iStudio</Company>
+		<Copyright>Copyright (c) 2023</Copyright>
+		<PackageIcon>icon.png</PackageIcon>
+		<Description>This is Sample App for Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/Khang152/Naminari.Auto</PackageProjectUrl>
+		<PackageTags>auto mouse keyboard bot</PackageTags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="Images\icon.ico" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Naminari.Auto\Naminari.Auto.csproj" />
@@ -13,6 +28,21 @@
 	
 	<ItemGroup>
 	  <Folder Include="Library\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="..\..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\Naminari.Auto\Images\icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 	
 	<ItemGroup>

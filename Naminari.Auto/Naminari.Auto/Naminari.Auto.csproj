@@ -9,7 +9,32 @@
 		<Company>iStudio</Company>
 		<Description>Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.</Description>
 		<Copyright>Copyright (c) 2023</Copyright>
+		<ApplicationIcon>Images\icon.ico</ApplicationIcon>
+		<SignAssembly>False</SignAssembly>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/Khang152/Naminari.Auto</PackageProjectUrl>
+		<PackageTags>auto mouse keyboard bot</PackageTags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="Images\icon.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\Naminari.Auto.SampleApp\Images\icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="OpenCvSharp4.Extensions" Version="4.7.0.20230115" />
