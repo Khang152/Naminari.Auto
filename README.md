@@ -1,4 +1,4 @@
-<img src="/Naminari.Auto/Naminari.Auto/Images/icon.png" width="200"/>
+<img alt="Logo" src="https://github.com/Khang152/Naminari.Auto/blob/develop/Naminari.Auto/Naminari.Auto/Images/icon.png" width="200"/>
 
 # Naminari.Auto
 
@@ -6,6 +6,20 @@ Naminari.Auto is a library designed to simplify task automation by providing use
 
 ## Prerequisites
  - **Windows:** .NET 7
+
+## Installation and sources
+[![nuget][nuget-badge]][nuget-url]
+
+[nuget-badge]: https://img.shields.io/badge/nuget-v1.0.0-blue.svg
+<pre>
+  nuget install MouseKeyHook
+</pre>
+
+ - [NuGet package][nuget-url]
+ - [Source code][source-url]
+
+ [nuget-url]: https://www.nuget.org/packages/Naminari.Auto
+ [source-url]: https://github.com/Khang152/Naminari.Auto
 
 # Usage
 
@@ -25,7 +39,7 @@ var color = Mouse.GetPosition().GetPixelColor();
 ```
 (Also, take a look at the sample app that is included with the source code)
 
-<img src="/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png"/>
+<img alt="Naminari.Auto.SampleApp" src="https://github.com/Khang152/Naminari.Auto/blob/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png"/>
 
 # Contributing Guide
  
