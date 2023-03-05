@@ -1,24 +1,40 @@
-using Naminari.Auto.SampleApp.Library;
+using Gma.System.MouseKeyHook;
 using Naminari.Auto.SampleApp.Models;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System;
 
 namespace Naminari.Auto.SampleApp
 {
     public partial class FormMain : Form
     {
+        private IKeyboardMouseEvents? m_Events;
         private static System.Windows.Forms.Timer? timer;
+        private List<ActionItem> actionItems = new List<ActionItem>();
 
         public FormMain()
         {
             InitializeComponent();
         }
 
+        private void InitializeLayout()
+        {
+            lblPosition.Text = Const.LBL_POSITION_TEXT;
+            lblTypeButton.Text = Const.LBL_TYPEBUTTON_TEXT;
+            lblTypeClick.Text = Const.LBL_TYPECLICK_TEXT;
+            
+            actionItems.Clear();
+            grvAction.DataSource = actionItems;
+        }
+
         private void FormMain_Load(object sender, EventArgs e)
         {
+            InitializeLayout();
+
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 10;
             timer.Tick += Timer_Tick;
-            timer.Enabled = true;
+            //timer.Enabled = true;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -27,47 +43,60 @@ namespace Naminari.Auto.SampleApp
             lblPosition.Text = $"Position : X : {pos.X} - Y : {pos.Y}";
         }
 
-        protected override void WndProc(ref Message m)
+        private void Subscribe(IKeyboardMouseEvents events)
         {
-            // Listen for operating system messages.
-            switch (m.Msg)
-            {
-                case (int)Messages.WM_LBUTTONDOWN:
-                    lblTypeButton.Text = GetSwapButtonThreshold() > 0 ? $"Type Button : {Messages.WM_RBUTTONDOWN.GetDescription()}" : $"Type Button : {Messages.WM_LBUTTONDOWN.GetDescription()}";
-                    lblTypeClick.Text = $"Type Click : Normal Click";
-                    break;
-
-                case (int)Messages.WM_RBUTTONDOWN:
-                    lblTypeButton.Text = GetSwapButtonThreshold() > 0 ? $"Type Button : {Messages.WM_LBUTTONDOWN.GetDescription()}" : $"Type Button : {Messages.WM_RBUTTONDOWN.GetDescription()}";
-                    lblTypeClick.Text = $"Type Click : Normal Click";
-                    break;
-
-                case (int)Messages.WM_MBUTTONDOWN:
-                    lblTypeButton.Text = $"Type Button : {Messages.WM_MBUTTONDOWN.GetDescription()}";
-                    lblTypeClick.Text = $"Type Click : Normal Click";
-                    break;
-
-                case (int)Messages.WM_LBUTTONDBLCLK:
-                    lblTypeClick.Text = $"Type Click : Double Click";
-                    break;
-
-                case (int)Messages.WM_RBUTTONDBLCLK:
-                    lblTypeClick.Text = $"Type Click : Double Click";
-                    break;
-
-                case (int)Messages.WM_MBUTTONDBLCLK:
-                    lblTypeClick.Text = $"Type Click : Double Click";
-                    break;
-            }
-            base.WndProc(ref m);
+            m_Events = events;
+            m_Events.MouseClick += OnMouseClick;
+            m_Events.MouseDoubleClick += OnMouseDoubleClick;
+            m_Events.MouseMove += HookManager_MouseMove;
         }
 
-        [DllImport("user32.dll")]
-        private static extern int GetSystemMetrics(int index);
-        private const int SM_SWAPBUTTON = 23;
-        public static int GetSwapButtonThreshold()
+        private void Unsubscribe()
         {
-            return GetSystemMetrics(SM_SWAPBUTTON);
+            if (m_Events == null) return;
+            m_Events.MouseClick -= OnMouseClick;
+            m_Events.MouseDoubleClick -= OnMouseDoubleClick;
+            m_Events.MouseMove -= HookManager_MouseMove;
+            m_Events.Dispose();
+        }
+
+        private void OnMouseClick(object? sender, MouseEventArgs e)
+        {
+            lblTypeButton.Text = $"Type Button : {e.Button.ToString()}";
+            lblTypeClick.Text = $"Type Click : Normal Click";
+
+            var pos = Mouse.GetPosition();
+            actionItems.Add(new ActionItem() { X = pos.X, Y = pos.Y, Color = pos.GetPixelColor().Name });
+
+            var bindingList = new BindingList<ActionItem>(actionItems);
+            var source = new BindingSource(bindingList, null);
+            grvAction.DataSource = source;
+        }
+
+        private void OnMouseDoubleClick(object? sender, MouseEventArgs e)
+        {
+            lblTypeButton.Text = $"Type Button : {e.Button.ToString()}";
+            lblTypeClick.Text = $"Type Click : Double Click";
+        }
+
+        private void HookManager_MouseMove(object? sender, MouseEventArgs e)
+        {
+            lblPosition.Text = $"Position : X : {e.X} - Y : {e.Y}";
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            if (btnStart.Text == "Start")
+            {
+                Subscribe(Hook.GlobalEvents());
+            }
+            else
+            {
+                Unsubscribe();
+                InitializeLayout();
+            }
+
+            btnStart.Text = btnStart.Text == "Start" ? "Stop" : "Start";
         }
     }
 }

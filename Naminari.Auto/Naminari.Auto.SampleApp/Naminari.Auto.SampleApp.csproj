@@ -10,4 +10,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Naminari.Auto\Naminari.Auto.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Reference Include="Gma.System.MouseKeyHook">
+	    <HintPath>..\..\..\..\Other\globalmousekeyhook\examples\ConsoleHook\bin\Debug\net7.0-windows\Gma.System.MouseKeyHook.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 </Project>
