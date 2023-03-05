@@ -12,8 +12,18 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Folder Include="Library\" />
+	</ItemGroup>
+	
+	<ItemGroup>
 	  <Reference Include="Gma.System.MouseKeyHook">
-	    <HintPath>..\..\..\..\Other\globalmousekeyhook\examples\ConsoleHook\bin\Debug\net7.0-windows\Gma.System.MouseKeyHook.dll</HintPath>
+	    <HintPath>Library\Gma.System.MouseKeyHook.dll</HintPath>
 	  </Reference>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Library\Gma.System.MouseKeyHook.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>
