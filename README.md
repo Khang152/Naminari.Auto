@@ -1,7 +1,7 @@
  [nuget-url]: https://www.nuget.org/packages/Naminari.Auto
  [source-url]: https://github.com/Khang152/Naminari.Auto
- [logo-url]: https://github.com/Khang152/Naminari.Auto/blob/develop/Naminari.Auto/Naminari.Auto/Images/icon.png
- [sampleApp-url]: https://github.com/Khang152/Naminari.Auto/blob/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png
+ [logo-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto/Images/icon.png
+ [sampleApp-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png
 
 ![logo][logo-url]
 # Naminari.Auto
@@ -16,7 +16,7 @@ Naminari.Auto is a library designed to simplify task automation by providing use
 
 [nuget-badge]: https://img.shields.io/badge/nuget-v1.0.0-blue.svg
 ```
-  nuget install Naminari.Auto
+  NuGet\Install-Package Naminari.Auto
 ```
 
  - [NuGet package][nuget-url]
