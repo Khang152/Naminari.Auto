@@ -17,13 +17,13 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/Khang152/Naminari.Auto</PackageProjectUrl>
 		<PackageTags>auto mouse keyboard bot</PackageTags>
-		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackAsTool>False</PackAsTool>
 		<RepositoryUrl>https://github.com/Khang152/Naminari.Auto.git</RepositoryUrl>
-		<RepositoryType></RepositoryType>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryType>git</RepositoryType>
 		<IncludeSymbols>False</IncludeSymbols>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Content Include="Images\icon.ico" />
