@@ -1,5 +1,8 @@
+<img src="/Naminari.Auto/Naminari.Auto/Images/icon.png" width="200"/>
+
 # Naminari.Auto
-Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input. 
+
+Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.
 
 ## Prerequisites
  - **Windows:** .NET 7
@@ -8,7 +11,7 @@ Naminari.Auto is a library designed to simplify task automation by providing use
 
 ### Import package
 ```csharp
-using Naminari.Auto.SampleApp.Models;
+using AutoClicker.Actions;
 ```
  
 ### Get the Mouse Position
@@ -21,6 +24,8 @@ var position = Mouse.GetPosition();
 var color = Mouse.GetPosition().GetPixelColor();
 ```
 (Also, take a look at the sample app that is included with the source code)
+
+<img src="/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png"/>
 
 # Contributing Guide
  
