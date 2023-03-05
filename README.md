@@ -12,7 +12,7 @@ Naminari.Auto is a library designed to simplify task automation by providing use
 
 [nuget-badge]: https://img.shields.io/badge/nuget-v1.0.0-blue.svg
 <pre>
-  nuget install MouseKeyHook
+  nuget install Naminari.Auto
 </pre>
 
  - [NuGet package][nuget-url]
