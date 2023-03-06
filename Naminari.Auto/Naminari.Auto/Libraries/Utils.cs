@@ -20,7 +20,7 @@ namespace Naminari.Auto
             }
             Bitmap bitmap = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), bitmap.Size);
+            graphics.CopyFromScreen(new Point(0, 0), new Point(0, 0), bitmap.Size);
             graphics.Dispose();
             return bitmap;
         }

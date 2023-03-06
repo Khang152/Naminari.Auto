@@ -3,6 +3,10 @@ using Naminari.Auto.SampleApp.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System;
+using System.Windows.Forms;
+using Naminari.Auto.Libraries;
+using System.Diagnostics;
+using System.Windows.Automation;
 
 namespace Naminari.Auto.SampleApp
 {
@@ -11,10 +15,12 @@ namespace Naminari.Auto.SampleApp
         private IKeyboardMouseEvents? m_Events;
         private static System.Windows.Forms.Timer? timer;
         private List<ActionItem> actionItems = new List<ActionItem>();
+        private Keyboard? keyboard;
 
         public FormMain()
         {
             InitializeComponent();
+            keyboard = new Keyboard();
         }
 
         private void InitializeLayout()
@@ -32,15 +38,13 @@ namespace Naminari.Auto.SampleApp
             InitializeLayout();
 
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10;
+            timer.Interval = 1000;
             timer.Tick += Timer_Tick;
             //timer.Enabled = true;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            var pos = Mouse.GetPosition();
-            lblPosition.Text = $"Position : X : {pos.X} - Y : {pos.Y}";
         }
 
         private void Subscribe(IKeyboardMouseEvents events)

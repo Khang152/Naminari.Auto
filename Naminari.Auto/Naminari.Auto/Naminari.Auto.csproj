@@ -4,6 +4,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
 		<Title>Naminari.Auto</Title>
 		<PackageId>Naminari.Auto</PackageId>
 		<Authors>Khang152</Authors>

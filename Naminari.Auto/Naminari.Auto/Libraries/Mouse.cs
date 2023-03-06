@@ -1,4 +1,6 @@
-﻿using Naminari.Auto.Models;
+﻿using Microsoft.VisualBasic.Devices;
+using Naminari.Auto.Models;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Naminari.Auto
@@ -101,7 +103,7 @@ namespace Naminari.Auto
             return GetSystemMetrics(SM_SWAPBUTTON);
         }
 
-        [DllImportAttribute("gdi32.dll")]
+        [DllImport("gdi32.dll")]
         private static extern int BitBlt
         (
             IntPtr hdcDest,     // handle to destination DC (device context)
@@ -112,7 +114,7 @@ namespace Naminari.Auto
             IntPtr hdcSrc,      // handle to source DC
             int nXSrc,          // x-coordinate of source upper-left corner
             int nYSrc,          // y-coordinate of source upper-left corner
-            System.Int32 dwRop  // raster operation code
+            int dwRop  // raster operation code
         );
 
         [DllImport("User32.dll")]
