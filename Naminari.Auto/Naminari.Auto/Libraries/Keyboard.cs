@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Automation;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Naminari.Auto.Libraries
@@ -10,7 +12,7 @@ namespace Naminari.Auto.Libraries
         private bool isKeepLastestProccess;
         public bool IsKeepLastestProccess { get => isKeepLastestProccess; set => isKeepLastestProccess = value; }
         public List<string> proccesses { get; set; } = new List<string>();
-        
+
         public Keyboard()
         {
             AutomationFocusChangedEventHandler focusHandler = OnFocusChanged;
@@ -40,16 +42,31 @@ namespace Naminari.Auto.Libraries
         {
             return await Task.Run(() =>
             {
-                SendKeys.SendWait(message);
-                return true;
-            });
-        }
-
-        public static async Task<bool> InputAsync(string message)
-        {
-            return await Task.Run(() =>
-            {
-                SendKeys.Send(message);
+                var sb = new StringBuilder(message.Length);
+                foreach (var c in message)
+                {
+                    switch (c)
+                    {
+                        case '+':
+                        case '^':
+                        case '%':
+                        case '~':
+                        case '(':
+                        case ')':
+                        case '[':
+                        case ']':
+                        case '{':
+                        case '}':
+                            sb.Append('{');
+                            sb.Append(c);
+                            sb.Append('}');
+                            break;
+                        default:
+                            sb.Append(c);
+                            break;
+                    }
+                }
+                SendKeys.SendWait(sb.ToString());
                 return true;
             });
         }
