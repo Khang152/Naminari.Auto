@@ -13,9 +13,12 @@ namespace Naminari.Auto.Models
         public List<Keys>? FollowedKeys { get; set; }
         public Keys? RepeatingKey { get; set; }
         public int? PressTimes { get; set; }
+    }
 
-        public KeywordVk[] s_keywords = new KeywordVk[]
-      {
+    public static class KeyAll
+    {
+        public static KeywordVk[] Data = new KeywordVk[]
+        {
             new KeywordVk("ENTER",      Keys.Return),
             new KeywordVk("TAB",        Keys.Tab),
             new KeywordVk("ESC",        Keys.Escape),
@@ -65,7 +68,7 @@ namespace Naminari.Auto.Models
             new KeywordVk("+",          Keys.Add),
             new KeywordVk("%",          (Keys.D5 | Keys.Shift)),
             new KeywordVk("^",          (Keys.D6 | Keys.Shift)),
-      };
+     };
         public class KeywordVk
         {
             public string Keyword;
@@ -79,6 +82,8 @@ namespace Naminari.Auto.Models
         }
     }
 
+
+
     public enum FunctionKeys
     {
         Shift,
@@ -86,5 +91,5 @@ namespace Naminari.Auto.Models
         Alt,
     }
 
-  
+
 }

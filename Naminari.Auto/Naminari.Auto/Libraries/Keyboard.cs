@@ -1,19 +1,22 @@
 ﻿using Naminari.Auto.Models;
+using OpenCvSharp.ML;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Automation;
-using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Naminari.Auto.Libraries
 {
     public class Keyboard
     {
-        private bool isKeepLastestProccess;
-        public bool IsKeepLastestProccess { get => isKeepLastestProccess; set => isKeepLastestProccess = value; }
-        public List<string> proccesses { get; set; } = new List<string>();
+        private bool isKeepLatestProcess;
+        public bool IsKeepLatestProcess { get => isKeepLatestProcess; set => isKeepLatestProcess = value; }
+
+        private List<string> processes = new List<string>();
+        public List<string> Processes { get => processes; set => processes = value; }
 
         public Keyboard()
         {
@@ -29,12 +32,12 @@ namespace Naminari.Auto.Libraries
                 int processId = focusedElement.Current.ProcessId;
                 using (Process process = Process.GetProcessById(processId))
                 {
-                    if (IsKeepLastestProccess == true)
+                    if (isKeepLatestProcess == true)
                     {
-                        proccesses.Clear();
+                        Processes.Clear();
                     }
 
-                    proccesses.Insert(0, process.ProcessName);
+                    Processes.Insert(0, process.ProcessName);
                     Debug.WriteLine(process.ProcessName);
                 }
             }
@@ -42,139 +45,88 @@ namespace Naminari.Auto.Libraries
 
         public static async Task<bool> TypingAsync(string message)
         {
-            var sb = new StringBuilder();
-            foreach (var c in message)
-            {
-                switch (c)
-                {
-                    case '+':
-                    case '^':
-                    case '%':
-                    case '~':
-                    case '(':
-                    case ')':
-                    case '[':
-                    case ']':
-                    case '{':
-                    case '}':
-                        sb.Append('{');
-                        sb.Append(c);
-                        sb.Append('}');
-                        break;
-                    default:
-                        sb.Append(c);
-                        break;
-                }
-            }
-            SendKeys.SendWait(sb.ToString());
+            string filteredText = Regex.Replace(message, @"[\{\}\(\)\+\^\%~\[\]]", "{$0}");
+            SendKeys.SendWait(filteredText);
             return await Task.FromResult(true);
         }
 
-        public static async Task<bool> CommandAsync(string commandKeys, string? proccessName = null)
+        public static async Task<bool> CommandAsync(string commandKeys, string? processName = null)
         {
-            if (string.IsNullOrEmpty(proccessName))
+            if (string.IsNullOrWhiteSpace(processName))
             {
                 SendKeys.SendWait(commandKeys);
                 return await Task.FromResult(true);
             }
 
-            Process? p = Process.GetProcessesByName(proccessName).FirstOrDefault();
-            if (p != null)
+            Process? process = Process.GetProcessesByName(processName).FirstOrDefault();
+            if (process != null)
             {
-                IntPtr h = p.MainWindowHandle;
-                SetForegroundWindow(h);
-                SendKeys.SendWait(commandKeys);
-                return await Task.FromResult(true);
+                try
+                {
+                    IntPtr handle = process.MainWindowHandle;
+                    SetForegroundWindow(handle);
+                    SendKeys.SendWait(commandKeys);
+                    return await Task.FromResult(true);
+                }
+                finally
+                {
+                    process.Dispose();
+                }
             }
 
             return await Task.FromResult(false);
         }
 
-        public static async Task<bool> CommandAsync(KeyItems keyItems, string? proccessName = null)
+        public static async Task<bool> CommandAsync(KeyItems keyItems, string? processName = null)
         {
-            var commandKeys = string.Empty;
+            var commandKeys = "";
 
-            var sb = new StringBuilder();
+            var keyStringBuilder = new StringBuilder();
             switch (keyItems.FunctionKey)
             {
                 case FunctionKeys.Shift:
-                    sb.Append('+');
+                    keyStringBuilder.Append('+');
                     break;
                 case FunctionKeys.Ctrl:
-                    sb.Append('^');
+                    keyStringBuilder.Append('^');
                     break;
                 case FunctionKeys.Alt:
-                    sb.Append('%');
-                    break;
-                default:
+                    keyStringBuilder.Append('%');
                     break;
             }
 
-            keyItems.PressedKeys ??= new List<Keys>();
-            keyItems.FollowedKeys ??= new List<Keys>();
-
-            foreach (var key in keyItems.PressedKeys)
+            if (keyItems.PressedKeys != null && keyItems.PressedKeys.Any())
             {
-                var sbm = new StringBuilder();
-                var IsKey = keyItems.s_keywords.Where(o => o.VK == key);
-                if (IsKey.Any())
+                var pressedKeysString = string.Join("", keyItems.PressedKeys.Select(GetKey));
+                if (keyItems.FollowedKeys != null && keyItems.FollowedKeys.Any())
                 {
-
-                    sbm.Append('{');
-                    sbm.Append(IsKey?.FirstOrDefault()?.Keyword);
-                    sbm.Append('}');
+                    keyStringBuilder.Append(pressedKeysString);
+                    keyStringBuilder.Append(string.Join("", keyItems.FollowedKeys.Select(GetKey)));
                 }
                 else
                 {
-                    sbm.Append(key.ToString());
-                }
-
-                if (!keyItems.FollowedKeys.Any())
-                {
-                    sb.Append('(');
-                    sb.Append(sbm);
-                    sb.Append(')');
-
-                    commandKeys = sb.ToString();
-                    return await CommandAsync(commandKeys.ToLower(), proccessName);
+                    keyStringBuilder.Append($"({pressedKeysString})");
                 }
             }
 
-            foreach (var key in keyItems.FollowedKeys)
+            if (keyItems.RepeatingKey != null && keyItems.PressTimes > 0)
             {
-                var IsKey = keyItems.s_keywords.Where(o => o.VK == key);
-                if (IsKey.Any())
-                {
-                    sb.Append('{');
-                    sb.Append(IsKey?.FirstOrDefault()?.Keyword);
-                    sb.Append('}');
-                }
-                else
-                {
-                    sb.Append(key.ToString());
-                }
-
-                commandKeys = sb.ToString();
-                return await CommandAsync(commandKeys.ToLower(), proccessName);
+                keyStringBuilder.Append($"{{{GetKey(keyItems.RepeatingKey.Value)} {keyItems.PressTimes}}}");
             }
 
-            commandKeys = sb.ToString();
-            return await CommandAsync(commandKeys.ToLower(), proccessName);
+            commandKeys = keyStringBuilder.ToString().ToLower();
+            return await CommandAsync(commandKeys, processName);
         }
 
-        public static KeyItems KeysCombined(FunctionKeys functionKeys)
+        private static string GetKey(Keys key)
         {
-            var keyItems = new KeyItems();
-            keyItems.FunctionKey = functionKeys;
-            return keyItems;
+            var keyData = KeyAll.Data.FirstOrDefault(o => o.VK == key);
+            return keyData?.Keyword ?? key.ToString();
         }
 
-        public static KeyItems KeysRepeating(Keys key)
-        {
-            var keyItems = new KeyItems();
-            keyItems.RepeatingKey = key;
-            return keyItems;
-        }
+        public static KeyItems KeysCombined(FunctionKeys functionKeys) => new KeyItems { FunctionKey = functionKeys };
+
+        public static KeyItems KeysRepeating(Keys key) => new KeyItems { RepeatingKey = key };
 
         // Activate an application window.
         [DllImport("USER32.DLL")]
