@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenCvSharp;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace Naminari.Auto
 {
@@ -20,8 +18,28 @@ namespace Naminari.Auto
             }
             Bitmap bitmap = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.CopyFromScreen(new Point(0, 0), new Point(0, 0), bitmap.Size);
+            graphics.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), bitmap.Size);
             graphics.Dispose();
+            return bitmap;
+        }
+
+        public Bitmap CreateBitmapFromSelect(Mat image)
+        {
+            Bitmap bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format24bppRgb);
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+            IntPtr bitmapPtr = bitmapData.Scan0;
+            int imageSize = image.Width * image.Height;
+            byte[] imageData = new byte[imageSize];
+            Marshal.Copy(image.Data, imageData, 0, imageSize);
+            Marshal.Copy(imageData, 0, bitmapPtr, imageSize);
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        public Bitmap CreateBitmapFromSelect(Mat image, Rect selection)
+        {
+            Mat selectedRegion = new Mat(image, selection);
+            Bitmap bitmap = CreateBitmapFromSelect(selectedRegion);
             return bitmap;
         }
     }
