@@ -23,6 +23,21 @@ namespace Naminari.Auto
             return bitmap;
         }
 
+        public static Bitmap CaptureScreen(Rectangle area)
+        {
+            IntPtr hdcSrc = GetDC(IntPtr.Zero);
+            IntPtr hdcDest = CreateCompatibleDC(hdcSrc);
+            IntPtr hBitmap = CreateCompatibleBitmap(hdcSrc, area.Width, area.Height);
+            IntPtr hOld = SelectObject(hdcDest, hBitmap);
+            BitBlt(hdcDest, 0, 0, area.Width, area.Height, hdcSrc, area.X, area.Y, 0xCC0020);
+            SelectObject(hdcDest, hOld);
+            DeleteObject(hdcDest);
+            ReleaseDC(IntPtr.Zero, hdcSrc);
+            Bitmap bmp = Bitmap.FromHbitmap(hBitmap);
+            DeleteObject(hBitmap);
+            return bmp;
+        }
+
         public Bitmap CreateBitmapFromSelect(Mat image)
         {
             Bitmap bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format24bppRgb);
@@ -42,5 +57,28 @@ namespace Naminari.Auto
             Bitmap bitmap = CreateBitmapFromSelect(selectedRegion);
             return bitmap;
         }
+
+        #region Import
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDC(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseDC(IntPtr hwnd, IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+        [DllImport("gdi32.dll")]
+        public static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int wDest, int hDest, IntPtr hdcSrc, int xSrc, int ySrc, int rop);
+
+        [DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hdc);
+        #endregion Import
     }
 }
