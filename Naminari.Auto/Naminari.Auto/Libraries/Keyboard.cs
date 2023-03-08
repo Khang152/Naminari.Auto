@@ -77,57 +77,6 @@ namespace Naminari.Auto.Libraries
             return await Task.FromResult(false);
         }
 
-        public static async Task<bool> CommandAsync(KeyItems keyItems, string? processName = null)
-        {
-            var commandKeys = "";
-
-            var keyStringBuilder = new StringBuilder();
-            switch (keyItems.FunctionKey)
-            {
-                case FunctionKeys.Shift:
-                    keyStringBuilder.Append('+');
-                    break;
-                case FunctionKeys.Ctrl:
-                    keyStringBuilder.Append('^');
-                    break;
-                case FunctionKeys.Alt:
-                    keyStringBuilder.Append('%');
-                    break;
-            }
-
-            if (keyItems.PressedKeys != null && keyItems.PressedKeys.Any())
-            {
-                var pressedKeysString = string.Join("", keyItems.PressedKeys.Select(GetKey));
-                if (keyItems.FollowedKeys != null && keyItems.FollowedKeys.Any())
-                {
-                    keyStringBuilder.Append(pressedKeysString);
-                    keyStringBuilder.Append(string.Join("", keyItems.FollowedKeys.Select(GetKey)));
-                }
-                else
-                {
-                    keyStringBuilder.Append($"({pressedKeysString})");
-                }
-            }
-
-            if (keyItems.RepeatingKey != null && keyItems.PressTimes > 0)
-            {
-                keyStringBuilder.Append($"{{{GetKey(keyItems.RepeatingKey.Value)} {keyItems.PressTimes}}}");
-            }
-
-            commandKeys = keyStringBuilder.ToString().ToLower();
-            return await CommandAsync(commandKeys, processName);
-        }
-
-        private static string GetKey(Keys key)
-        {
-            var keyData = KeyAll.Data.FirstOrDefault(o => o.VK == key);
-            return keyData?.Keyword ?? key.ToString();
-        }
-
-        public static KeyItems KeysCombined(FunctionKeys functionKeys) => new KeyItems { FunctionKey = functionKeys };
-
-        public static KeyItems KeysRepeating(Keys key) => new KeyItems { RepeatingKey = key };
-
         public static Task<bool> SendKeysCombination(string keysCombination)
         {
             // Split the keys combination string into individual keys
