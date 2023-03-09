@@ -52,7 +52,7 @@ jobs:
           NUGET_KEY: ${{secrets.GH_API_KEY}}
 
           # NuGet server uri hosting the packages, defaults to https://api.nuget.org
-          NUGET_SOURCE: https://nuget.pkg.github.com
+          NUGET_SOURCE: https://nuget.pkg.github.com/Khang152/index.json
 
           # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
           # INCLUDE_SYMBOLS: false
