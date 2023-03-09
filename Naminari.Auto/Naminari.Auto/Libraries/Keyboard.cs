@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 
 
-namespace Naminari.Auto.Libraries
+namespace Naminari.Auto
 {
     public class Keyboard
     {
@@ -45,11 +45,26 @@ namespace Naminari.Auto.Libraries
             }
         }
 
-        public static async Task<bool> TypingAsync(string message)
+        public static async Task<bool> TypingAsync(string message, string? processName = null)
         {
-            string filteredText = Regex.Replace(message, @"[\{\}\(\)\+\^\%~\[\]]", "{$0}");
-            SendKeys.SendWait(filteredText);
-            return await Task.FromResult(true);
+            Process? process = Process.GetProcessesByName(processName).FirstOrDefault();
+            if (process != null)
+            {
+                try
+                {
+                    string filteredText = Regex.Replace(message, @"[\{\}\(\)\+\^\%~\[\]]", "{$0}");
+                    IntPtr handle = process.MainWindowHandle;
+                    SetForegroundWindow(handle);
+                    SendKeys.SendWait(filteredText);
+                    return await Task.FromResult(true);
+                }
+                finally
+                {
+                    process.Dispose();
+                }
+            }
+
+            return await Task.FromResult(false);
         }
 
         public static async Task<bool> CommandAsync(string commandKeys, string? processName = null)

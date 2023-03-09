@@ -9,7 +9,7 @@
 		<PackageId>Naminari.Auto</PackageId>
 		<Authors>Khang152</Authors>
 		<Company>iStudio</Company>
-		<Version>1.0.0</Version>
+		<Version>1.5.2</Version>
 		<Description>Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.</Description>
 		<Copyright>Copyright (c) 2023</Copyright>
 		<ApplicationIcon>Images\icon.ico</ApplicationIcon>
@@ -17,7 +17,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/Khang152/Naminari.Auto</PackageProjectUrl>
-		<PackageTags>auto mouse keyboard bot</PackageTags>
+		<PackageTags>Automation Bot Script Auto Mouse Keyboard</PackageTags>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackAsTool>False</PackAsTool>
 		<RepositoryUrl>https://github.com/Khang152/Naminari.Auto.git</RepositoryUrl>

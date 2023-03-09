@@ -28,7 +28,8 @@ Naminari.Auto is a library designed to simplify task automation by providing use
 ```csharp
 using AutoClicker.Actions;
 ```
- 
+
+## Support for mouse input:
 ### Get the Mouse Position
 ```csharp
 var position = Mouse.GetPosition();
@@ -38,9 +39,73 @@ var position = Mouse.GetPosition();
 ```csharp
 var color = Mouse.GetPosition().GetPixelColor();
 ```
-(Also, take a look at the sample app that is included with the source code)
+
+## Support for keyboard input:
+### Obtain the process list by clicking
+```csharp
+// Declare
+Keyboard keyboard = new Keyboard();
+
+// Only keep lastest process
+keyboard.IsKeepLatestProcess = true;
+
+// Click to any proccess windows and get list
+keyboard.Processes
+```
+
+### Send raw text input to the selected process
+```csharp
+Task.Run(async () =>
+{
+    await Naminari.Auto.Keyboard.TypingAsync("Hello World!!!", "notepad++");
+});
+```
+
+### Send command key input to the process
+```csharp
+// To select all text in Notepad++, hold down the Ctrl key and press the A key.
+Task.Run(async () =>
+{
+    await Auto.Keyboard.CommandAsync("Ctrl+A", "notepad++");
+});
+
+// To open Test Explorer in Visual Studio 2022, hold down the Ctrl key and press the A key, then release both keys and press the T key
+Task.Run(async () =>
+{
+    await Auto.Keyboard.CommandAsync("Ctrl+E,T", "devenv");
+});
+```
+
+## Support for image:
+### Capture a screenshot in Windows
+```csharp
+Naminari.Auto.Utils.GetScreenShot()
+```
+
+### Obtain an image from a selected area
+```csharp
+Rectangle area = new Rectangle
+                (Math.Min(startPoint.X, e.Location.X),
+                Math.Min(startPoint.Y, e.Location.Y),
+                Math.Abs(startPoint.X - e.Location.X),
+                Math.Abs(startPoint.Y - e.Location.Y));
+
+Bitmap bmp = Naminari.Auto.Utils.GetImageFromSelect(area);
+pictureBox.Image = bmp;
+```
+
+### Locate the position of a small image within a larger image
+```csharp
+var bigImage = new Bitmap(bigSource);
+var smallImage = new Bitmap(smallSource);
+var position = Utils.FindImagePosition(smallImage, bigImage);
+```
+
+### The Sample App
 
 ![Naminari.Auto.SampleApp][sampleApp-url]
+
+> Take a look at the sample app that is included with the source code
 
 # Contributing Guide
  

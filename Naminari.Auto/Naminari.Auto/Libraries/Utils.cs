@@ -1,7 +1,14 @@
-﻿using OpenCvSharp;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using static OpenCvSharp.FileStorage;
+using static System.Formats.Asn1.AsnWriter;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using System.Text.RegularExpressions;
 
 namespace Naminari.Auto
 {
@@ -23,7 +30,7 @@ namespace Naminari.Auto
             return bitmap;
         }
 
-        public static Bitmap CaptureScreen(Rectangle area)
+        public static Bitmap GetImageFromSelect(Rectangle area)
         {
             IntPtr hdcSrc = GetDC(IntPtr.Zero);
             IntPtr hdcDest = CreateCompatibleDC(hdcSrc);
@@ -38,6 +45,38 @@ namespace Naminari.Auto
             return bmp;
         }
 
+        public static System.Drawing.Point FindImagePosition(Bitmap smallImage, Bitmap bigImage, bool centerImage = true)
+        {
+            Mat smallBitmap = BitmapConverter.ToMat(smallImage);
+            Mat bigBitmap = BitmapConverter.ToMat(bigImage);
+
+            // Create a result matrix to store the match scores
+            Mat result = new Mat();
+            int resultCols = bigBitmap.Cols - smallBitmap.Cols + 1;
+            int resultRows = bigBitmap.Rows - smallBitmap.Rows + 1;
+            result.Create(resultRows, resultCols, MatType.CV_32FC1);
+
+            Cv2.MatchTemplate(bigBitmap, smallBitmap, result, TemplateMatchModes.CCoeffNormed);
+            Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
+
+            // Check if the match is above a certain threshold (e.g. 0.8)
+            if (maxVal > 0.8)
+            {
+                // The small bitmap was found in the big bitmap
+                if (centerImage)
+                {
+                    return new System.Drawing.Point(maxLoc.X + smallBitmap.Width/2, maxLoc.Y + smallBitmap.Height/2 );
+                }
+
+                return new System.Drawing.Point(maxLoc.X, maxLoc.Y);
+            }
+            else
+            {
+                // The small bitmap was not found in the big bitmap
+                return new System.Drawing.Point(-1, -1);
+            }
+        }
+        
         public Bitmap CreateBitmapFromSelect(Mat image)
         {
             Bitmap bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format24bppRgb);
@@ -60,25 +99,25 @@ namespace Naminari.Auto
 
         #region Import
         [DllImport("user32.dll")]
-        public static extern IntPtr GetDC(IntPtr hwnd);
+        private static extern IntPtr GetDC(IntPtr hwnd);
 
         [DllImport("user32.dll")]
-        public static extern bool ReleaseDC(IntPtr hwnd, IntPtr hdc);
+        private static extern bool ReleaseDC(IntPtr hwnd, IntPtr hdc);
 
         [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
 
         [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
+        private static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
 
         [DllImport("gdi32.dll")]
-        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+        private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
         [DllImport("gdi32.dll")]
-        public static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int wDest, int hDest, IntPtr hdcSrc, int xSrc, int ySrc, int rop);
+        private static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int wDest, int hDest, IntPtr hdcSrc, int xSrc, int ySrc, int rop);
 
         [DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hdc);
+        private static extern bool DeleteObject(IntPtr hdc);
         #endregion Import
     }
 }

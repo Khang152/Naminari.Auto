@@ -9,6 +9,7 @@
 		<Title>Naminari.Auto.Sample</Title>
 		<Authors>Khang152</Authors>
 		<Company>iStudio</Company>
+		<Version>1.5.2</Version>
 		<Copyright>Copyright (c) 2023</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
 		<Description>This is Sample App for Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.</Description>

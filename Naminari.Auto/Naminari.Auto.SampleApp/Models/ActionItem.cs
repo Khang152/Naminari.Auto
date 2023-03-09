@@ -11,5 +11,6 @@ namespace Naminari.Auto.SampleApp.Models
         public int? X { get; set; }
         public int? Y { get; set; }
         public string? Color { get; set; }
+        public string? Process { get; set; }
     }
 }
