@@ -2,9 +2,10 @@
  [source-url]: https://github.com/Khang152/Naminari.Auto
  [logo-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto/Images/icon.png
  [sampleApp-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png
+ [nuget-badge]: https://img.shields.io/badge/nuget-v1.5.3-blue.svg
 
 ![logo][logo-url]
-# Naminari.Auto
+# Naminari.Auto [![nuget][nuget-badge]][nuget-url]
 
 Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.
 
@@ -12,13 +13,6 @@ Naminari.Auto is a library designed to simplify task automation by providing use
  - **Windows:** .NET 7
 
 ## Installation and sources
-[![nuget][nuget-badge]][nuget-url]
-
-[nuget-badge]: https://img.shields.io/badge/nuget-v1.0.0-blue.svg
-```
-  NuGet\Install-Package Naminari.Auto
-```
-
  - [NuGet package][nuget-url]
  - [Source code][source-url]
 
@@ -30,7 +24,7 @@ using AutoClicker.Actions;
 ```
 
 ## Support for mouse input:
-### Get the Mouse Position
+### Get the Mouse position
 ```csharp
 var position = Mouse.GetPosition();
 ```
@@ -38,6 +32,30 @@ var position = Mouse.GetPosition();
 ### Get the pixel color at the mouse position
 ```csharp
 var color = Mouse.GetPosition().GetPixelColor();
+```
+
+### Excute the Mouse click
+```csharp
+Task.Run(async () =>
+{
+    // Left Click
+    await Naminari.Auto.Mouse.ClickAsync(mouseButtons: MouseButtons.Left);
+
+    // Left Double Click
+    await Naminari.Auto.Mouse.ClickAsync(mouseButtons: MouseButtons.Left, clickTypes: Naminari.Auto.Models.ClickTypes.Double);
+});
+```
+
+### Excute the Mouse hold & release
+```csharp
+Task.Run(async () =>
+{
+    // Hold Left Click
+    await Naminari.Auto.Mouse.HoldAsync(mouseButtons: MouseButtons.Left);
+
+    // Release Left Click
+    await Naminari.Auto.Mouse.ReleaseAsync(mouseButtons: MouseButtons.Left);
+});
 ```
 
 ## Support for keyboard input:
