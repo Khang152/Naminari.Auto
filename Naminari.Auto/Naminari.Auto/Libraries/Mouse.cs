@@ -33,7 +33,7 @@ namespace Naminari.Auto
         public static async Task<bool> HoldAsync(MouseButtons mouseButtons = MouseButtons.Left)
         {
             uint dwFlags = MOUSEEVENTF_LEFTDOWN;
-            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
+            if (GetSwapButtonThreshold() > 0)
             {
                 mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
                 dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN);
@@ -54,7 +54,7 @@ namespace Naminari.Auto
         public static async Task<bool> ReleaseAsync(MouseButtons mouseButtons = MouseButtons.Left)
         {
             uint dwFlags = MOUSEEVENTF_LEFTUP;
-            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
+            if (GetSwapButtonThreshold() > 0)
             {
                 mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
                 dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP);
@@ -74,7 +74,7 @@ namespace Naminari.Auto
 
         public static async Task<bool> ClickAsync(MouseButtons mouseButtons = MouseButtons.Left, ClickTypes clickTypes = ClickTypes.Single)
         {
-            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
+            if (GetSwapButtonThreshold() > 0)
             {
                 mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
             }
