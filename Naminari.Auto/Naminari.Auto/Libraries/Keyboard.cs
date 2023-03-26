@@ -70,7 +70,7 @@ namespace Naminari.Auto
         public static async Task<bool> CommandAsync(string commandKeys, string? processName = null)
         {
             if (string.IsNullOrWhiteSpace(processName))
-            {             
+            {
                 return await SendKeysCombination(commandKeys);
             }
 
@@ -116,11 +116,21 @@ namespace Naminari.Auto
                 formattedKeys += ConvertKeyToFormat(key);
             }
 
-            // Simulate the key press using SendKeys.SendWait
-            SendKeys.SendWait(formattedKeys.ToLower());
-            if (!string.IsNullOrWhiteSpace(keyRelease))
+            try
             {
-                SendKeys.SendWait(ConvertKeyToFormat(keyRelease));
+                if (!string.IsNullOrEmpty(formattedKeys))
+                {
+                    // Simulate the key press using SendKeys.SendWait
+                    SendKeys.SendWait(formattedKeys.ToLower());
+                    if (!string.IsNullOrWhiteSpace(keyRelease))
+                    {
+                        SendKeys.SendWait(ConvertKeyToFormat(keyRelease));
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
             }
 
             return Task.FromResult(true);

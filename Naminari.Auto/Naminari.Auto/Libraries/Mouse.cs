@@ -15,16 +15,68 @@ namespace Naminari.Auto
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
         private const int SM_SWAPBUTTON = 23;
 
-        public static bool Click()
+        public static bool Click(MouseButtons mouseButtons = MouseButtons.Left, ClickTypes clickTypes = ClickTypes.Single)
         {
-            return ClickAsync().Result;
+            return ClickAsync(mouseButtons, clickTypes).Result;
+        }
+
+        public static bool Hold(MouseButtons mouseButtons = MouseButtons.Left)
+        {
+            return HoldAsync(mouseButtons).Result;
+        }
+
+        public static bool Release(MouseButtons mouseButtons = MouseButtons.Left)
+        {
+            return ReleaseAsync(mouseButtons).Result;
+        }
+
+        public static async Task<bool> HoldAsync(MouseButtons mouseButtons = MouseButtons.Left)
+        {
+            uint dwFlags = MOUSEEVENTF_LEFTDOWN;
+            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
+            {
+                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
+                dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN);
+            }
+            else if (mouseButtons == MouseButtons.Middle)
+            {
+                dwFlags = MOUSEEVENTF_MIDDLEDOWN;
+            }
+
+            INPUT[] inputsDown = new INPUT[1];
+            inputsDown[0].type = INPUT_MOUSE;
+            inputsDown[0].mi.dwFlags = dwFlags;
+            SendInput(1, inputsDown, Marshal.SizeOf(typeof(INPUT)));
+
+            return await Task.FromResult(true);
+        }
+
+        public static async Task<bool> ReleaseAsync(MouseButtons mouseButtons = MouseButtons.Left)
+        {
+            uint dwFlags = MOUSEEVENTF_LEFTUP;
+            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
+            {
+                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
+                dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP);
+            }
+            else if (mouseButtons == MouseButtons.Middle)
+            {
+                dwFlags = MOUSEEVENTF_MIDDLEUP;
+            }
+
+            INPUT[] inputsUp = new INPUT[1];
+            inputsUp[0].type = INPUT_MOUSE;
+            inputsUp[0].mi.dwFlags = dwFlags;
+            SendInput(1, inputsUp, Marshal.SizeOf(typeof(INPUT)));
+
+            return await Task.FromResult(true);
         }
 
         public static async Task<bool> ClickAsync(MouseButtons mouseButtons = MouseButtons.Left, ClickTypes clickTypes = ClickTypes.Single)
         {
-            if (GetSwapButtonThreshold() > 1 && mouseButtons != MouseButtons.Middle)
+            if (GetSwapButtonThreshold() > 0 && mouseButtons != MouseButtons.Middle)
             {
-                mouseButtons = MouseButtons.Right;
+                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
             }
 
             if (clickTypes == ClickTypes.Double)
@@ -123,10 +175,10 @@ namespace Naminari.Auto
         [DllImport("user32.dll")]
         private static extern int GetSystemMetrics(int index);
 
-        [DllImport("USER32.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         private static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
-        [DllImport("USER32.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         private static extern void SetCursorPos(int X, int Y);
 
         [StructLayout(LayoutKind.Sequential)]
@@ -139,6 +191,31 @@ namespace Naminari.Auto
             {
                 return new Point(point.X, point.Y);
             }
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        private const uint INPUT_MOUSE = 0;
+        private const uint MOUSEEVENTF_MOVE = 0x0001;
+        private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct INPUT
+        {
+            public uint type;
+            public MOUSEINPUT mi;
         }
     }
 }

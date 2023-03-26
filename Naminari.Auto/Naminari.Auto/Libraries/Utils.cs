@@ -65,7 +65,7 @@ namespace Naminari.Auto
                 // The small bitmap was found in the big bitmap
                 if (centerImage)
                 {
-                    return new System.Drawing.Point(maxLoc.X + smallBitmap.Width/2, maxLoc.Y + smallBitmap.Height/2 );
+                    return new System.Drawing.Point(maxLoc.X + smallBitmap.Width / 2, maxLoc.Y + smallBitmap.Height / 2);
                 }
 
                 return new System.Drawing.Point(maxLoc.X, maxLoc.Y);
@@ -76,7 +76,7 @@ namespace Naminari.Auto
                 return new System.Drawing.Point(-1, -1);
             }
         }
-        
+
         public Bitmap CreateBitmapFromSelect(Mat image)
         {
             Bitmap bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format24bppRgb);
