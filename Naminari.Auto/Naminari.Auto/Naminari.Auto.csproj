@@ -25,6 +25,7 @@
 		<IncludeSymbols>False</IncludeSymbols>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Content Include="Images\icon.ico" />
