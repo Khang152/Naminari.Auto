@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic.Devices;
-using Naminari.Auto.Models;
-using System.Drawing;
+﻿using Naminari.Auto.Models;
 using System.Runtime.InteropServices;
 
 namespace Naminari.Auto
@@ -30,19 +28,37 @@ namespace Naminari.Auto
             return ReleaseAsync(mouseButtons).Result;
         }
 
-        public static async Task<bool> HoldAsync(MouseButtons mouseButtons = MouseButtons.Left)
+        private static uint GetMouseButtonDownFlag(MouseButtons mouseButtons, ActionTypes action)
         {
-            uint dwFlags = MOUSEEVENTF_LEFTDOWN;
+            // Get Adjusted MouseButton
+            mouseButtons = GetAdjustedMouseButton(mouseButtons);
+
+            // Determine the appropriate flag for the specified button
+            return (mouseButtons, action) switch
+            {
+                (MouseButtons.Left, ActionTypes.Hold) => MOUSEEVENTF_LEFTDOWN,
+                (MouseButtons.Right, ActionTypes.Hold) => MOUSEEVENTF_RIGHTDOWN,
+                (MouseButtons.Middle, ActionTypes.Hold) => MOUSEEVENTF_MIDDLEDOWN,
+                (MouseButtons.Left, ActionTypes.Release) => MOUSEEVENTF_LEFTUP,
+                (MouseButtons.Right, ActionTypes.Release) => MOUSEEVENTF_RIGHTUP,
+                (MouseButtons.Middle, ActionTypes.Release) => MOUSEEVENTF_MIDDLEUP,
+                _ => throw new ArgumentException("Unsupported mouse button")
+            };
+        }
+
+        private static MouseButtons GetAdjustedMouseButton(MouseButtons mouseButtons)
+        {
             if (GetSwapButtonThreshold() > 0)
             {
-                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
-                dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_RIGHTDOWN);
+                return mouseButtons == MouseButtons.Left ? MouseButtons.Right :
+                       mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
             }
-            else if (mouseButtons == MouseButtons.Middle)
-            {
-                dwFlags = MOUSEEVENTF_MIDDLEDOWN;
-            }
+            return mouseButtons;
+        }
 
+        public static async Task<bool> HoldAsync(MouseButtons mouseButtons = MouseButtons.Left, ActionTypes action = ActionTypes.Hold)
+        {
+            uint dwFlags = GetMouseButtonDownFlag(mouseButtons, action);
             INPUT[] inputsDown = new INPUT[1];
             inputsDown[0].type = INPUT_MOUSE;
             inputsDown[0].mi.dwFlags = dwFlags;
@@ -51,19 +67,9 @@ namespace Naminari.Auto
             return await Task.FromResult(true);
         }
 
-        public static async Task<bool> ReleaseAsync(MouseButtons mouseButtons = MouseButtons.Left)
+        public static async Task<bool> ReleaseAsync(MouseButtons mouseButtons = MouseButtons.Left, ActionTypes action = ActionTypes.Release)
         {
-            uint dwFlags = MOUSEEVENTF_LEFTUP;
-            if (GetSwapButtonThreshold() > 0)
-            {
-                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
-                dwFlags = (uint)(mouseButtons == MouseButtons.Left ? MOUSEEVENTF_LEFTUP : MOUSEEVENTF_RIGHTUP);
-            }
-            else if (mouseButtons == MouseButtons.Middle)
-            {
-                dwFlags = MOUSEEVENTF_MIDDLEUP;
-            }
-
+            uint dwFlags = GetMouseButtonDownFlag(mouseButtons, action);
             INPUT[] inputsUp = new INPUT[1];
             inputsUp[0].type = INPUT_MOUSE;
             inputsUp[0].mi.dwFlags = dwFlags;
@@ -74,42 +80,45 @@ namespace Naminari.Auto
 
         public static async Task<bool> ClickAsync(MouseButtons mouseButtons = MouseButtons.Left, ClickTypes clickTypes = ClickTypes.Single)
         {
-            if (GetSwapButtonThreshold() > 0)
-            {
-                mouseButtons = mouseButtons == MouseButtons.Left ? MouseButtons.Right : mouseButtons == MouseButtons.Right ? MouseButtons.Left : mouseButtons;
-            }
+            mouseButtons = GetAdjustedMouseButton(mouseButtons);
 
             if (clickTypes == ClickTypes.Double)
             {
-                await CallClick();
+                await PerformClick(mouseButtons);
                 await Task.Delay(200);
             }
-
-            await CallClick();
-
-            async Task<bool> CallClick()
+            else
             {
-                if (mouseButtons == MouseButtons.Left)
-                {
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                    await Task.Delay(100);
-                    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                }
-                else if (mouseButtons == MouseButtons.Right)
-                {
-                    mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-                    await Task.Delay(100);
-                    mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
-                }
-                else if (mouseButtons == MouseButtons.Middle)
-                {
-                    mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0);
-                    await Task.Delay(100);
-                    mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0);
-                }
-                return true;
+                await PerformClick(mouseButtons);
             }
+
             return true;
+        }
+
+        private static async Task PerformClick(MouseButtons mouseButtons)
+        {
+            int downFlag, upFlag;
+            switch (mouseButtons)
+            {
+                case MouseButtons.Left:
+                    downFlag = MOUSEEVENTF_LEFTDOWN;
+                    upFlag = MOUSEEVENTF_LEFTUP;
+                    break;
+                case MouseButtons.Right:
+                    downFlag = MOUSEEVENTF_RIGHTDOWN;
+                    upFlag = MOUSEEVENTF_RIGHTUP;
+                    break;
+                case MouseButtons.Middle:
+                    downFlag = MOUSEEVENTF_MIDDLEDOWN;
+                    upFlag = MOUSEEVENTF_MIDDLEUP;
+                    break;
+                default:
+                    throw new ArgumentException("Unsupported mouse button");
+            }
+
+            mouse_event(downFlag, 0, 0, 0, 0);
+            await Task.Delay(100);
+            mouse_event(upFlag, 0, 0, 0, 0);
         }
 
         public static Point GetPosition()

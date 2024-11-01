@@ -20,4 +20,11 @@ namespace Naminari.Auto.Models
         Single = 0,
         Double = 1
     }
+
+    public enum ActionTypes
+    {
+        None = 0,
+        Hold = 1,
+        Release = 2
+    }
 }
