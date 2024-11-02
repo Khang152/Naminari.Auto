@@ -5,44 +5,31 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWPF>true</UseWPF>
+		<PackageIcon>icon.png</PackageIcon>
 		<Title>Naminari.Auto</Title>
 		<PackageId>Naminari.Auto</PackageId>
 		<Authors>Khang152</Authors>
 		<Company>iRaidenStudio</Company>
-		<Version>1.5.3</Version>
 		<Description>Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.</Description>
-		<Copyright>Copyright (c) 2023</Copyright>
-		<ApplicationIcon>Images\icon.ico</ApplicationIcon>
-		<SignAssembly>False</SignAssembly>
+		<Copyright>Copyright (c) 2024</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/Khang152/Naminari.Auto</PackageProjectUrl>
 		<PackageTags>Automation Bot Script Auto Mouse Keyboard</PackageTags>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<PackAsTool>False</PackAsTool>
 		<RepositoryUrl>https://github.com/Khang152/Naminari.Auto.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<IncludeSymbols>False</IncludeSymbols>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
+	
 	<ItemGroup>
-	  <Content Include="Images\icon.ico" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="..\..\LICENSE">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Include="..\..\README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Include="..\Naminari.Auto.SampleApp\Images\icon.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="Images\icon.ico" Pack="true" PackagePath="\" />
+		<None Include="Images\icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
