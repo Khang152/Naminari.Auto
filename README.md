@@ -2,7 +2,7 @@
  [source-url]: https://github.com/Khang152/Naminari.Auto
  [logo-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto/Images/icon.png
  [sampleApp-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png
- [azure-deployment-url]: https://img.shields.io/azure-devops/release/khang152/e253e265-3fde-4ddf-b6e2-d5b2c70beb47/1/1?style=for-the-badge&logo=azuredevops&label=Azure%20Deployment
+ [azure-deployment-url]: https://img.shields.io/azure-devops/release/khang152/e253e265-3fde-4ddf-b6e2-d5b2c70beb47/2/2?style=for-the-badge&logo=azuredevops&label=Azure%20Deployment
  [nuget-version-url]: https://img.shields.io/nuget/v/Naminari.Auto.svg?style=for-the-badge&logo=nuget
  [nuget-download-url]: https://img.shields.io/nuget/dt/Naminari.Auto?style=for-the-badge&logo=nuget&color=red
 ![logo][logo-url]
