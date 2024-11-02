@@ -2,15 +2,18 @@
  [source-url]: https://github.com/Khang152/Naminari.Auto
  [logo-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto/Images/icon.png
  [sampleApp-url]: https://raw.githubusercontent.com/Khang152/Naminari.Auto/develop/Naminari.Auto/Naminari.Auto.SampleApp/Images/SampleApp.png
- [nuget-badge]: https://img.shields.io/badge/nuget-v1.5.3-blue.svg
-
+ [azure-deployment-url]: https://img.shields.io/azure-devops/release/khang152/e253e265-3fde-4ddf-b6e2-d5b2c70beb47/1/1?style=for-the-badge&logo=azuredevops&label=Azure%20Deployment
+ [nuget-version-url]: https://img.shields.io/nuget/v/Naminari.Auto.svg?style=for-the-badge&logo=nuget
+ [nuget-download-url]: https://img.shields.io/nuget/dt/Naminari.Auto?style=for-the-badge&logo=nuget&color=red
 ![logo][logo-url]
-# Naminari.Auto [![nuget][nuget-badge]][nuget-url]
+# Naminari.Auto
+[![NuGet Version (Naminari.Auto)][nuget-version-url]][nuget-url]&nbsp;[![NuGet Download (Naminari.Auto)][nuget-download-url]][nuget-url]
+![Azure DevOps Releases][azure-deployment-url]
 
 Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.
 
 ## Prerequisites
- - **Windows:** .NET 7
+ - **Windows:** .NET 8
 
 ## Installation and sources
  - [NuGet package][nuget-url]
