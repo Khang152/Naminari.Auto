@@ -13,7 +13,7 @@
 Naminari.Auto is a library designed to simplify task automation by providing users with the ability to control their mouse and keyboard inputs. With Naminari.Auto, you can easily create scripts that simulate user input without the need for manual input.
 
 ## Prerequisites
- - **Windows:** .NET 8
+ - **Windows:** .NET 8, .NET 9
 
 ## Installation and sources
  - [NuGet package][nuget-url]
